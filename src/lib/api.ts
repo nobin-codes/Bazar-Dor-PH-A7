@@ -1,6 +1,8 @@
+import type { Product } from "@/types/product";
+
 const BASE_URL = "https://api.abcz.workers.dev/api/bazardor";
 
-export async function getProducts() {
+export async function getProducts(): Promise<Product[]> {
   const response = await fetch(`${BASE_URL}/products`);
 
   if (!response.ok) {
@@ -20,7 +22,9 @@ export async function getCategories() {
   return response.json();
 }
 
-export async function getProductsByCategory(category: string) {
+export async function getProductsByCategory(
+  category: string
+): Promise<Product[]> {
   const response = await fetch(
     `${BASE_URL}/products?category=${encodeURIComponent(category)}`
   );
@@ -32,14 +36,16 @@ export async function getProductsByCategory(category: string) {
   return response.json();
 }
 
-export async function getProduct(slug: string) {
-  const response = await fetch(`${BASE_URL}/products/${slug}`);
+export async function getProduct(slug: string): Promise<Product> {
+  const products = await getProducts();
 
-  if (!response.ok) {
+  const product = products.find((item) => item.slug === slug);
+
+  if (!product) {
     throw new Error("পণ্য পাওয়া যায়নি");
   }
 
-  return response.json();
+  return product;
 }
 
 export async function getCategory(slug: string) {

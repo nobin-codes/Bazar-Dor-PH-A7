@@ -1,6 +1,8 @@
 import { getProducts } from "@/lib/api";
 import ProductCard from "@/components/ProductCard";
 import type { Product } from "@/types/product";
+import Hero from "@/components/Hero";
+
 
 function getTopRisers(products: Product[]): Product[] {
   return products
@@ -24,6 +26,7 @@ export default async function HomePage() {
 
   return (
     <main className="mx-auto w-full max-w-6xl px-4 py-10">
+      <Hero />
       <section>
         <h1 className="text-3xl font-bold">
           বাজার দর

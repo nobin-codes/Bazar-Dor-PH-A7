@@ -1,13 +1,23 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Hero() {
+  const todayDate = new Intl.DateTimeFormat("bn-BD", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Dhaka",
+  }).format(new Date());
+
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:py-16 lg:py-20">
       <div className="grid items-center gap-10 rounded-3xl border bg-gray-50 p-6 sm:p-10 lg:grid-cols-2 lg:p-12">
         <div>
           <p className="text-sm font-semibold uppercase tracking-wider text-gray-500">
-            শুক্রবার, ৯ অক্টোবর, ২০২৬
+            {todayDate}
           </p>
 
           <h1 className="mt-4 text-4xl font-bold leading-tight sm:text-5xl">
@@ -22,7 +32,7 @@ export default function Hero() {
           </p>
 
           <Link
-            href="#সব-পণ্য"
+            href="/#সব-পণ্য"
             className="mt-7 inline-flex rounded-xl bg-black px-6 py-3 font-semibold text-white transition hover:bg-gray-800"
           >
             সব দাম দেখুন
@@ -43,3 +53,4 @@ export default function Hero() {
     </section>
   );
 }
+

@@ -19,30 +19,33 @@ export default function Navbar() {
   const { data: session, isPending } = useSession();
 
   const [categories, setCategories] = useState<Category[]>([]);
-  const [date, setDate] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [profileOpen, setProfileOpen] = useState(false);
 
   const profileRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    setDate(
-      new Date().toLocaleDateString("bn-BD", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
-    );
+  const date = new Intl.DateTimeFormat("bn-BD", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "Asia/Dhaka",
+  }).format(new Date());
 
+  function closeMenus() {
+    setMenuOpen(false);
+    setProfileOpen(false);
+  }
+
+  useEffect(() => {
     const controller = new AbortController();
 
     async function loadCategories() {
       try {
         const response = await fetch(
           "https://api.api-store.workers.dev/api/bazardor/categories",
-          { signal: controller.signal }
+          { signal: controller.signal },
         );
 
         if (!response.ok) {
@@ -83,11 +86,6 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    setMenuOpen(false);
-    setProfileOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (
         profileRef.current &&
@@ -99,8 +97,7 @@ export default function Navbar() {
 
     function handleEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setProfileOpen(false);
-        setMenuOpen(false);
+        closeMenus();
       }
     }
 
@@ -122,8 +119,7 @@ export default function Navbar() {
         return;
       }
 
-      setProfileOpen(false);
-      setMenuOpen(false);
+      closeMenus();
 
       toast.success("সফলভাবে সাইন আউট হয়েছে");
 
@@ -144,14 +140,13 @@ export default function Navbar() {
   return (
     <header className="relative z-40 border-b border-[#e1e9de] bg-white">
       <div className="site-container">
-     
         <div className="flex min-h-[92px] items-center justify-between gap-3 py-4">
           <Link
             href="/"
+            onClick={closeMenus}
             className="flex min-w-0 shrink-0 items-center gap-3"
             aria-label="বাজার দর হোম পেজ"
           >
-            
             <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#285e33] p-1 sm:h-10 sm:w-10">
               <Image
                 src="/logo-icon.png"
@@ -170,12 +165,11 @@ export default function Navbar() {
               </span>
 
               <span className="mt-1 whitespace-nowrap text-xs font-medium text-[#718078] sm:text-sm">
-                {date || "তারিখ লোড হচ্ছে..."}
+                {date}
               </span>
             </span>
           </Link>
 
-     
           <div className="hidden shrink-0 items-center gap-2 sm:flex">
             {isPending ? (
               <div className="h-9 w-24 animate-pulse rounded-md bg-[#f2f6ef]" />
@@ -202,14 +196,12 @@ export default function Navbar() {
                     </span>
                   )}
 
-                  <span className="text-sm font-semibold text-[#285e33]">
-                    প্রোফাইল
+                  <span className="max-w-32 truncate text-sm font-semibold text-[#285e33]">
+                    {" "}
+                    {session.user.name || "ব্যবহারকারী"}{" "}
                   </span>
 
-                  <span
-                    aria-hidden="true"
-                    className="text-xs text-[#718078]"
-                  >
+                  <span aria-hidden="true" className="text-xs text-[#718078]">
                     {profileOpen ? "▲" : "▼"}
                   </span>
                 </button>
@@ -249,7 +241,7 @@ export default function Navbar() {
                     <Link
                       href="/profile"
                       role="menuitem"
-                      onClick={() => setProfileOpen(false)}
+                      onClick={closeMenus}
                       className={`flex items-center gap-3 rounded-md px-3 py-3 text-sm font-medium transition ${
                         pathname === "/profile"
                           ? "bg-[#eaf3e7] text-[#285e33]"
@@ -276,6 +268,7 @@ export default function Navbar() {
               <>
                 <Link
                   href="/signin"
+                  onClick={closeMenus}
                   className="rounded-md px-4 py-2 text-sm font-semibold text-[#397b43] transition hover:bg-[#f2f6ef]"
                 >
                   সাইন ইন
@@ -283,6 +276,7 @@ export default function Navbar() {
 
                 <Link
                   href="/signup"
+                  onClick={closeMenus}
                   className="signup-btn inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-semibold"
                 >
                   সাইন আপ
@@ -291,7 +285,6 @@ export default function Navbar() {
             )}
           </div>
 
-         
           <button
             type="button"
             onClick={() => setMenuOpen((previous) => !previous)}
@@ -304,13 +297,13 @@ export default function Navbar() {
           </button>
         </div>
 
-    
         <nav
           aria-label="পণ্যের ক্যাটাগরি"
           className="flex min-h-[49px] items-center gap-2 overflow-x-auto border-t border-[#f0f3ed] py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <Link
             href="/"
+            onClick={closeMenus}
             aria-current={pathname === "/" ? "page" : undefined}
             className={`${categoryLinkClass} ${
               pathname === "/"
@@ -332,6 +325,7 @@ export default function Navbar() {
                 <Link
                   key={category.slug}
                   href={`/category/${category.slug}`}
+                  onClick={closeMenus}
                   aria-current={
                     isCategoryActive(category.slug) ? "page" : undefined
                   }
@@ -347,16 +341,13 @@ export default function Navbar() {
               ))}
         </nav>
 
-     
         {menuOpen && (
           <div
             id="mobile-auth-menu"
             className="border-t border-[#e1e9de] py-3 sm:hidden"
           >
             {isPending ? (
-              <p className="px-3 py-2 text-sm text-[#718078]">
-                লোড হচ্ছে...
-              </p>
+              <p className="px-3 py-2 text-sm text-[#718078]">লোড হচ্ছে...</p>
             ) : session ? (
               <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3 px-3 py-2">
@@ -386,7 +377,7 @@ export default function Navbar() {
 
                 <Link
                   href="/profile"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={closeMenus}
                   className="rounded-md px-3 py-2 text-sm font-medium text-[#526157] hover:bg-[#f2f6ef]"
                 >
                   👤 আমার প্রোফাইল
@@ -394,7 +385,7 @@ export default function Navbar() {
 
                 <Link
                   href="/dashboard"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={closeMenus}
                   className="rounded-md px-3 py-2 text-sm font-medium text-[#526157] hover:bg-[#f2f6ef]"
                 >
                   ড্যাশবোর্ড
@@ -412,7 +403,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   href="/signin"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={closeMenus}
                   className="flex-1 rounded-md border border-[#e1e9de] px-3 py-2 text-center text-sm font-semibold text-[#397b43]"
                 >
                   সাইন ইন
@@ -420,7 +411,7 @@ export default function Navbar() {
 
                 <Link
                   href="/signup"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={closeMenus}
                   className="signup-btn flex-1 rounded-md px-3 py-2 text-center text-sm font-semibold"
                 >
                   সাইন আপ
@@ -433,4 +424,3 @@ export default function Navbar() {
     </header>
   );
 }
-

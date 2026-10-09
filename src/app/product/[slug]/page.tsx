@@ -58,7 +58,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const markets = product.markets ?? [];
+  const markets = [...(product.markets ?? [])].sort(
+    (a, b) => a.min - b.min || a.max - b.max,
+  );
   const change = product.change;
   const isUp = change?.dir === "up";
   const isDown = change?.dir === "down";
@@ -159,8 +161,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
 
               <div className="mt-3">
-                <p className="text-sm font-medium text-black">দামের পরিবর্তন</p>
-
                 <div className="mt-1 flex flex-wrap items-center justify-center gap-2">
                   <span
                     className="text-sm font-bold text-black"
@@ -249,10 +249,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <h2 className="text-lg font-bold text-black sm:text-xl">
                 বাজারভিত্তিক আজকের দাম
               </h2>
-
-              <p className="mt-1 text-sm text-black">
-                বিভিন্ন বাজারের দামের তুলনা
-              </p>
             </div>
 
             {markets.length === 0 ? (

@@ -10,21 +10,62 @@ export default function ProfilePage() {
   const router = useRouter();
   const { data: session, isPending } = useSession();
 
-  const [name, setName] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [signingOut, setSigningOut] = useState(false);
-
   useEffect(() => {
     if (!isPending && !session) {
       router.replace("/signin");
     }
   }, [isPending, session, router]);
 
-  useEffect(() => {
-    if (session?.user?.name) {
-      setName(session.user.name);
-    }
-  }, [session?.user?.name]);
+  if (isPending || !session) {
+    return (
+      <main className="flex min-h-[60vh] items-center justify-center bg-[#f7f9f6]">
+        <p className="text-sm text-gray-500">লোড হচ্ছে...</p>
+      </main>
+    );
+  }
+
+  return (
+    <ProfileForm
+      key={session.user.id}
+      initialName={session.user.name || ""}
+      userName={session.user.name || "ব্যবহারকারী"}
+      email={session.user.email}
+      image={session.user.image}
+      onSignOut={async () => {
+        await signOut({
+          fetchOptions: {
+            onSuccess: () => {
+              toast.success("সফলভাবে সাইন আউট হয়েছে");
+              router.push("/");
+              router.refresh();
+            },
+          },
+        });
+      }}
+    />
+  );
+}
+
+interface ProfileFormProps {
+  initialName: string;
+  userName: string;
+  email: string;
+  image?: string | null;
+  onSignOut: () => Promise<void>;
+}
+
+function ProfileForm({
+  initialName,
+  userName,
+  email,
+  image,
+  onSignOut,
+}: ProfileFormProps) {
+  const router = useRouter();
+
+  const [name, setName] = useState(initialName);
+  const [loading, setLoading] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -36,6 +77,8 @@ export default function ProfilePage() {
       return;
     }
 
+    if (loading) return;
+
     setLoading(true);
 
     try {
@@ -46,6 +89,7 @@ export default function ProfilePage() {
         return;
       }
 
+      setName(trimmedName);
       toast.success("প্রোফাইল আপডেট হয়েছে");
       router.refresh();
     } catch {
@@ -61,30 +105,12 @@ export default function ProfilePage() {
     setSigningOut(true);
 
     try {
-      await signOut({
-        fetchOptions: {
-          onSuccess: () => {
-            toast.success("সফলভাবে সাইন আউট হয়েছে");
-            router.push("/");
-            router.refresh();
-          },
-        },
-      });
+      await onSignOut();
     } catch {
       toast.error("সাইন আউট করা যায়নি");
       setSigningOut(false);
     }
   }
-
-  if (isPending || !session) {
-    return (
-      <main className="flex min-h-[60vh] items-center justify-center bg-[#f7f9f6]">
-        <p className="text-sm text-gray-500">লোড হচ্ছে...</p>
-      </main>
-    );
-  }
-
-  const userName = session.user.name || "ব্যবহারকারী";
 
   return (
     <main className="min-h-[calc(100vh-100px)] bg-[#f7f9f6] px-4 py-10 sm:py-14">
@@ -99,13 +125,12 @@ export default function ProfilePage() {
           </p>
         </div>
 
-       
         <section className="flex items-center justify-between gap-4 rounded-xl border border-[#e2e8df] bg-white p-5 shadow-sm sm:p-6">
           <div className="flex min-w-0 items-center gap-4">
             <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#e8f3e7] text-xl font-bold text-[#008000] ring-1 ring-[#d9e8d7] sm:h-16 sm:w-16">
-              {session.user.image ? (
+              {image ? (
                 <Image
-                  src={session.user.image}
+                  src={image}
                   alt={userName}
                   fill
                   sizes="64px"
@@ -122,14 +147,14 @@ export default function ProfilePage() {
               </h2>
 
               <p className="mt-1 break-all text-sm text-[#687568]">
-                {session.user.email}
+                {email}
               </p>
             </div>
           </div>
 
           <button
             type="button"
-            onClick={handleSignOut}
+            onClick={() => void handleSignOut()}
             disabled={signingOut}
             className="inline-flex shrink-0 items-center gap-1.5 rounded-md px-2 py-2 text-sm font-semibold text-red-600 transition hover:bg-red-50 hover:text-red-700 disabled:cursor-not-allowed disabled:opacity-60 sm:px-3"
           >
@@ -153,13 +178,13 @@ export default function ProfilePage() {
             <span className="hidden sm:inline">
               {signingOut ? "সাইন আউট হচ্ছে..." : "সাইন আউট"}
             </span>
+
             <span className="sm:hidden">
               {signingOut ? "অপেক্ষা..." : "সাইন আউট"}
             </span>
           </button>
         </section>
 
-    
         <section className="mt-5 rounded-xl border border-[#e2e8df] bg-white p-5 shadow-sm sm:p-6">
           <h3 className="text-base font-bold text-[#18251a]">
             তথ্য

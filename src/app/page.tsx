@@ -71,7 +71,15 @@ export default async function HomePage() {
     <main className="site-container pb-10 pt-4 sm:pb-12 sm:pt-6">
       <section className="hero-panel grid items-center gap-5 overflow-hidden px-4 py-6 sm:grid-cols-[1.4fr_.6fr] sm:gap-6 sm:px-7 sm:py-8 lg:px-9 lg:py-9">
         <div className="min-w-0">
-          <span className="eyebrow">শুক্রবার, ৯ অক্টোবর, ২০২৬</span>
+          <span className="eyebrow">
+            {new Date().toLocaleDateString("bn-BD", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+              timeZone: "Asia/Dhaka",
+            })}
+          </span>
 
           <h1 className="mt-3 text-2xl font-black leading-tight tracking-tight text-[#202b23] sm:text-3xl lg:text-4xl">
             আজকের বাজারের দাম এক নজরে
@@ -91,18 +99,19 @@ export default async function HomePage() {
         </div>
 
         <div
-          aria-label="বাজার দর লোগো"
+          aria-label="বাজার দর ব্যানার"
           role="img"
-          className="flex min-h-[110px] items-center justify-center sm:min-h-[165px]"
+          className="flex min-h-[180px] items-center justify-center sm:min-h-[240px] lg:min-h-[300px]"
         >
+          {" "}
           <Image
             src="/bazar-hero.png"
             alt="বাজার দর"
-            width={240}
-            height={240}
+            width={500}
+            height={500}
             priority
-            className="h-28 w-28 object-contain sm:h-36 sm:w-36 lg:h-40 lg:w-40"
-          />
+            className="h-44 w-44 object-contain sm:h-56 sm:w-56 lg:h-72 lg:w-72"
+          />{" "}
         </div>
       </section>
 

@@ -41,7 +41,7 @@ export default function Navbar() {
     async function loadCategories() {
       try {
         const response = await fetch(
-          "https://api.abcz.workers.dev/api/bazardor/categories",
+          "https://api.api-store.workers.dev/api/bazardor/categories",
           { signal: controller.signal }
         );
 

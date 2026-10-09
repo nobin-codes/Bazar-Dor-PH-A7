@@ -99,7 +99,7 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        {/* Profile information box */}
+       
         <section className="flex items-center justify-between gap-4 rounded-xl border border-[#e2e8df] bg-white p-5 shadow-sm sm:p-6">
           <div className="flex min-w-0 items-center gap-4">
             <div className="relative flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#e8f3e7] text-xl font-bold text-[#008000] ring-1 ring-[#d9e8d7] sm:h-16 sm:w-16">
@@ -159,7 +159,7 @@ export default function ProfilePage() {
           </button>
         </section>
 
-        {/* Profile update box */}
+    
         <section className="mt-5 rounded-xl border border-[#e2e8df] bg-white p-5 shadow-sm sm:p-6">
           <h3 className="text-base font-bold text-[#18251a]">
             তথ্য

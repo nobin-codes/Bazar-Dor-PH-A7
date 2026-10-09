@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Product } from "@/types/product";
 
-const BASE_URL = "https://api.abcz.workers.dev/api/bazardor";
+const BASE_URL = "https://api.api-store.workers.dev/api/bazardor";
 
 function toBengaliNumber(value: number): string {
   return value.toLocaleString("bn-BD");

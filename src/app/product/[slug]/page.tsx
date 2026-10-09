@@ -92,7 +92,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   return (
     <main className="min-h-screen bg-white px-4 py-5 text-black sm:py-7">
       <div className="mx-auto w-full max-w-6xl">
-        {/* Breadcrumb */}
         <nav
           aria-label="Breadcrumb"
           className="mb-4 flex w-full flex-wrap items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm text-black"
@@ -115,10 +114,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <span className="font-semibold text-black">{product.nameBn}</span>
         </nav>
 
-        {/* BOX 1: Compact Product Overview */}
         <section className="rounded-2xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            {/* Product Information */}
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gray-50 text-3xl sm:h-16 sm:w-16 sm:text-4xl">
                 {product.image || product.categoryIcon || "🛒"}
@@ -146,9 +143,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               </div>
             </div>
 
-            {/* Compact Centered Gray Box */}
             <div className="w-full rounded-xl bg-gray-50 px-3 py-3 text-center sm:px-4 sm:py-3 lg:w-[260px] lg:shrink-0">
-              {/* Today's Price */}
               <div>
                 <p className="text-sm font-medium text-black">আজকের দাম</p>
 
@@ -163,7 +158,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </div>
               </div>
 
-              {/* Price Change */}
               <div className="mt-3">
                 <p className="text-sm font-medium text-black">দামের পরিবর্তন</p>
 
@@ -196,16 +190,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </section>
 
-        {/* BOX 2: Compact Summary and Market Prices */}
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white p-3 shadow-sm sm:p-4">
-          {/* Price Summary */}
           <div>
             <h2 className="text-lg font-bold text-black sm:text-xl">
               দামের সারসংক্ষেপ
             </h2>
 
             <div className="mt-3 grid grid-cols-1 gap-3 min-[420px]:grid-cols-3">
-              {/* Minimum Price */}
               <div className="rounded-xl border border-gray-200 bg-white p-3 sm:p-4">
                 <p className="text-sm font-medium text-black">সর্বনিম্ন দাম</p>
 
@@ -221,7 +212,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               </div>
 
-              {/* Maximum Price */}
               <div className="rounded-xl border border-gray-200 bg-white p-3 sm:p-4">
                 <p className="text-sm font-medium text-black">সর্বাধিক দাম</p>
 
@@ -237,7 +227,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 </p>
               </div>
 
-              {/* Average Price */}
               <div className="rounded-xl border border-gray-200 bg-white p-3 sm:p-4">
                 <p className="text-sm font-medium text-black">গড় দাম</p>
 
@@ -255,7 +244,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
 
-          {/* Market-wise Prices */}
           <div className="mt-6">
             <div className="mb-3">
               <h2 className="text-lg font-bold text-black sm:text-xl">

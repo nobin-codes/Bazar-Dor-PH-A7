@@ -4,7 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ToastProvider from "@/components/ToastProvider";
 import PriceTicker from "@/components/PriceTicker";
-
+import AuthActivityGuard from "@/components/AuthActivityGuard";
 
 
 const geistSans = Geist({
@@ -33,11 +33,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
-        <PriceTicker />
-        <ToastProvider />
-        {children}
-      </body>
+  <AuthActivityGuard>
+    <Navbar />
+    <PriceTicker />
+    <ToastProvider />
+    {children}
+  </AuthActivityGuard>
+</body>
     </html>
   );
 }

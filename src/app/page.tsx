@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getProducts } from "@/lib/api";
 import ProductCard from "@/components/ProductCard";
@@ -29,16 +30,16 @@ function ProductSection({
 }) {
   return (
     <section className="mt-7 sm:mt-8">
-      {" "}
       <h2 className="mb-4 flex items-center gap-2 text-base font-extrabold text-[#203329] sm:text-lg">
         <span
           className={direction === "up" ? "text-red-600" : "text-green-700"}
           aria-hidden="true"
         >
-          {direction === "up" ? "▲" : "▼"}{" "}
+          {direction === "up" ? "▲" : "▼"}
         </span>
-        {title}{" "}
+        {title}
       </h2>
+
       {products.length > 0 ? (
         <div className="grid grid-cols-1 items-stretch gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:gap-4">
           {products.map((product) => (
@@ -68,19 +69,19 @@ export default async function HomePage() {
 
   return (
     <main className="site-container pb-10 pt-4 sm:pb-12 sm:pt-6">
-      {" "}
       <section className="hero-panel grid items-center gap-5 overflow-hidden px-4 py-6 sm:grid-cols-[1.4fr_.6fr] sm:gap-6 sm:px-7 sm:py-8 lg:px-9 lg:py-9">
-        {" "}
         <div className="min-w-0">
-          {" "}
-          <span className="eyebrow">বাজারদর, ৯ অক্টোবর, ২০২৬ </span>
+          <span className="eyebrow">শুক্রবার, ৯ অক্টোবর, ২০২৬</span>
+
           <h1 className="mt-3 text-2xl font-black leading-tight tracking-tight text-[#202b23] sm:text-3xl lg:text-4xl">
             আজকের বাজারের দাম এক নজরে
           </h1>
+
           <p className="mt-3 max-w-lg text-xs leading-6 text-[#68756b] sm:text-sm sm:leading-7">
             চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও নিত্যপ্রয়োজনীয় পণ্যের দাম —
             বাজারের সর্বশেষ তথ্য জানুন, সঠিক সিদ্ধান্ত নিন।
           </p>
+
           <Link href="#সব-পণ্য" className="primary-btn mt-5 inline-flex">
             সব দাম দেখুন
             <span className="ml-2" aria-hidden="true">
@@ -88,19 +89,23 @@ export default async function HomePage() {
             </span>
           </Link>
         </div>
+
         <div
-          aria-label="বাজারের পণ্যের ঝুড়ি"
+          aria-label="বাজার দর লোগো"
           role="img"
           className="flex min-h-[110px] items-center justify-center sm:min-h-[165px]"
         >
-          <div className="relative flex h-28 w-36 items-center justify-center sm:h-36 sm:w-44 lg:h-40 lg:w-48">
-            <div className="absolute bottom-1 h-5 w-full rounded-[50%] bg-[#dfe8dd]" />
-            <div className="relative z-10 text-[76px] leading-none sm:text-[96px] lg:text-[104px]">
-              🧺
-            </div>
-          </div>
+          <Image
+            src="/bazar-hero.png"
+            alt="বাজার দর"
+            width={240}
+            height={240}
+            priority
+            className="h-28 w-28 object-contain sm:h-36 sm:w-36 lg:h-40 lg:w-40"
+          />
         </div>
       </section>
+
       {products.length > 0 && (
         <>
           <ProductSection
@@ -134,6 +139,7 @@ export default async function HomePage() {
           </section>
         </>
       )}
+
       {products.length === 0 && (
         <section
           id="সব-পণ্য"

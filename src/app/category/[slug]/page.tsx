@@ -23,7 +23,7 @@ export default async function CategoryPage({
   const categories = await getCategories();
 
   const category = categories.find(
-    (item: Category) => item.slug === slug
+    (item: Category) => item.slug === slug,
   );
 
   if (!category) {
@@ -33,33 +33,37 @@ export default async function CategoryPage({
   const products = await getProductsByCategory(slug);
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 py-10">
-      <Link
-        href="/"
-        className="inline-flex rounded-lg border px-4 py-2 text-sm"
-      >
-        ← হোম পেজে ফিরে যান
-      </Link>
+    <main className="min-h-screen bg-[#f7f9f6]">
+      <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:py-10">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#687568] transition hover:text-[#008000]"
+        >
+          <span aria-hidden="true">←</span>
+          হোম পেজে ফিরে যান
+        </Link>
 
-      <section className="mt-8">
-        <div className="flex items-center gap-3">
-          <span className="text-4xl">
-            {category.icon}
-          </span>
+        <section className="mt-8">
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[#e4ecdf] bg-white text-3xl shadow-sm sm:h-16 sm:w-16 sm:text-4xl">
+              {category.icon}
+            </div>
 
-          <div>
-            <h1 className="text-3xl font-bold">
-              {category.nameBn}
-            </h1>
+            <div className="min-w-0">
+              <h1 className="text-2xl font-extrabold tracking-tight text-[#243329] sm:text-3xl">
+                {category.nameBn}
+              </h1>
 
-            <p className="mt-1 text-gray-500">
-              এই ক্যাটাগরির সকল পণ্যের আজকের দাম
-            </p>
+              <p className="mt-1 text-sm leading-6 text-[#788278]">
+                {products.length.toLocaleString("bn-BD")}টি পণ্যের আজকের দাম ও পরিবর্তন
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <CategoryProducts products={products} />
+        <CategoryProducts products={products} />
+      </div>
     </main>
   );
 }
+

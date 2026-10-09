@@ -2,44 +2,42 @@ import type { Product } from "@/types/product";
 
 const BASE_URL = "https://api.api-store.workers.dev/api/bazardor";
 
-export async function getProducts(): Promise<Product[]> {
-  const response = await fetch(`${BASE_URL}/products`);
+async function fetchApi<T>(url: string): Promise<T> {
+  const response = await fetch(url, {
+    next: { revalidate: 60 },
+  });
 
   if (!response.ok) {
-    throw new Error("পণ্য লোড করা যায়নি");
+    throw new Error(`API request failed: ${response.status}`);
   }
 
-  return response.json();
+  return response.json() as Promise<T>;
+}
+
+export async function getProducts(): Promise<Product[]> {
+  return fetchApi<Product[]>(`${BASE_URL}/products`);
 }
 
 export async function getCategories() {
-  const response = await fetch(`${BASE_URL}/categories`);
-
-  if (!response.ok) {
-    throw new Error("ক্যাটাগরি লোড করা যায়নি");
-  }
-
-  return response.json();
+  return fetchApi(`${BASE_URL}/categories`);
 }
 
 export async function getProductsByCategory(
-  category: string
+  category: string,
 ): Promise<Product[]> {
-  const response = await fetch(
-    `${BASE_URL}/products?category=${encodeURIComponent(category)}`
+  return fetchApi<Product[]>(
+    `${BASE_URL}/products?category=${encodeURIComponent(category)}`,
   );
-
-  if (!response.ok) {
-    throw new Error("ক্যাটাগরির পণ্য লোড করা যায়নি");
-  }
-
-  return response.json();
 }
 
-export async function getProduct(slug: string): Promise<Product> {
+export async function getProduct(
+  slug: string,
+): Promise<Product> {
   const products = await getProducts();
 
-  const product = products.find((item) => item.slug === slug);
+  const product = products.find(
+    (item) => item.slug === slug,
+  );
 
   if (!product) {
     throw new Error("পণ্য পাওয়া যায়নি");
@@ -49,14 +47,8 @@ export async function getProduct(slug: string): Promise<Product> {
 }
 
 export async function getCategory(slug: string) {
-  const response = await fetch(
-    `${BASE_URL}/categories/${encodeURIComponent(slug)}`
+  return fetchApi(
+    `${BASE_URL}/categories/${encodeURIComponent(slug)}`,
   );
-
-  if (!response.ok) {
-    throw new Error("ক্যাটাগরি পাওয়া যায়নি");
-  }
-
-  return response.json();
 }
 

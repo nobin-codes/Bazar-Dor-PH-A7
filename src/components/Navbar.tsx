@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "@/lib/auth-client";
@@ -28,6 +29,7 @@ export default function Navbar() {
   useEffect(() => {
     setDate(
       new Date().toLocaleDateString("bn-BD", {
+        weekday: "long",
         day: "numeric",
         month: "long",
         year: "numeric",
@@ -48,7 +50,6 @@ export default function Navbar() {
         }
 
         const result: unknown = await response.json();
-
         let data: unknown[] = [];
 
         if (Array.isArray(result)) {
@@ -99,6 +100,7 @@ export default function Navbar() {
     function handleEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setProfileOpen(false);
+        setMenuOpen(false);
       }
     }
 
@@ -142,23 +144,38 @@ export default function Navbar() {
   return (
     <header className="relative z-40 border-b border-[#e1e9de] bg-white">
       <div className="site-container">
-        {/* First row: logo/date and account actions */}
+     
         <div className="flex min-h-[92px] items-center justify-between gap-3 py-4">
           <Link
             href="/"
-            className="flex min-w-0 shrink-0 flex-col items-start"
+            className="flex min-w-0 shrink-0 items-center gap-3"
             aria-label="বাজার দর হোম পেজ"
           >
-            <span className="whitespace-nowrap text-xl font-extrabold tracking-tight text-[#285e33] sm:text-2xl">
-              🛒 বাজার দর
+            
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[#285e33] p-1 sm:h-10 sm:w-10">
+              <Image
+                src="/logo-icon.png"
+                alt="বাজার দর লোগো"
+                width={40}
+                height={40}
+                priority
+                unoptimized
+                className="h-full w-full object-contain"
+              />
             </span>
 
-            <span className="mt-1 text-xs font-medium text-[#718078] sm:text-sm">
-              {date || "তারিখ লোড হচ্ছে..."}
+            <span className="flex min-w-0 flex-col items-start">
+              <span className="whitespace-nowrap text-xl font-extrabold tracking-tight text-black sm:text-2xl">
+                বাজার দর
+              </span>
+
+              <span className="mt-1 whitespace-nowrap text-xs font-medium text-[#718078] sm:text-sm">
+                {date || "তারিখ লোড হচ্ছে..."}
+              </span>
             </span>
           </Link>
 
-          {/* Desktop account actions */}
+     
           <div className="hidden shrink-0 items-center gap-2 sm:flex">
             {isPending ? (
               <div className="h-9 w-24 animate-pulse rounded-md bg-[#f2f6ef]" />
@@ -246,9 +263,7 @@ export default function Navbar() {
                     <button
                       type="button"
                       role="menuitem"
-                      onClick={() => {
-                        void handleLogout();
-                      }}
+                      onClick={() => void handleLogout()}
                       className="flex w-full items-center gap-3 rounded-md px-3 py-3 text-left text-sm font-medium text-red-600 transition hover:bg-red-50"
                     >
                       <span aria-hidden="true">↩</span>
@@ -276,7 +291,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Mobile menu button */}
+         
           <button
             type="button"
             onClick={() => setMenuOpen((previous) => !previous)}
@@ -289,7 +304,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Second row: category navigation */}
+    
         <nav
           aria-label="পণ্যের ক্যাটাগরি"
           className="flex min-h-[49px] items-center gap-2 overflow-x-auto border-t border-[#f0f3ed] py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -332,7 +347,7 @@ export default function Navbar() {
               ))}
         </nav>
 
-        {/* Mobile authentication menu */}
+     
         {menuOpen && (
           <div
             id="mobile-auth-menu"
@@ -362,6 +377,7 @@ export default function Navbar() {
                     <p className="truncate text-sm font-semibold text-[#243329]">
                       {session.user.name || "ব্যবহারকারী"}
                     </p>
+
                     <p className="break-all text-xs text-[#718078]">
                       {session.user.email}
                     </p>
@@ -386,9 +402,7 @@ export default function Navbar() {
 
                 <button
                   type="button"
-                  onClick={() => {
-                    void handleLogout();
-                  }}
+                  onClick={() => void handleLogout()}
                   className="rounded-md px-3 py-2 text-left text-sm font-medium text-red-700 hover:bg-red-50"
                 >
                   ↩ সাইন আউট

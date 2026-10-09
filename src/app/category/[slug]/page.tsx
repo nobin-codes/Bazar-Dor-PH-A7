@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCategories, getProductsByCategory } from "@/lib/api";
+import {
+  getCategories,
+  getProductsByCategory,
+  type Category,
+} from "@/lib/api";
 import CategoryProducts from "@/components/CategoryProducts";
 
 interface CategoryPageProps {
@@ -9,21 +13,15 @@ interface CategoryPageProps {
   }>;
 }
 
-interface Category {
-  slug: string;
-  nameBn: string;
-  icon: string;
-}
-
 export default async function CategoryPage({
   params,
 }: CategoryPageProps) {
   const { slug } = await params;
 
-  const categories = await getCategories();
+  const categories: Category[] = await getCategories();
 
   const category = categories.find(
-    (item: Category) => item.slug === slug,
+    (item) => item.slug === slug,
   );
 
   if (!category) {

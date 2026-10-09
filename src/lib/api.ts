@@ -2,6 +2,12 @@ import type { Product } from "@/types/product";
 
 const BASE_URL = "https://api.api-store.workers.dev/api/bazardor";
 
+export interface Category {
+  slug: string;
+  nameBn: string;
+  icon: string;
+}
+
 async function fetchApi<T>(url: string): Promise<T> {
   const response = await fetch(url, {
     next: { revalidate: 60 },
@@ -18,8 +24,8 @@ export async function getProducts(): Promise<Product[]> {
   return fetchApi<Product[]>(`${BASE_URL}/products`);
 }
 
-export async function getCategories() {
-  return fetchApi(`${BASE_URL}/categories`);
+export async function getCategories(): Promise<Category[]> {
+  return fetchApi<Category[]>(`${BASE_URL}/categories`);
 }
 
 export async function getProductsByCategory(
@@ -46,8 +52,10 @@ export async function getProduct(
   return product;
 }
 
-export async function getCategory(slug: string) {
-  return fetchApi(
+export async function getCategory(
+  slug: string,
+): Promise<Category> {
+  return fetchApi<Category>(
     `${BASE_URL}/categories/${encodeURIComponent(slug)}`,
   );
 }

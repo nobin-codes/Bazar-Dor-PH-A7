@@ -38,7 +38,7 @@ export default function PriceTicker() {
   const tickerProducts = [...products, ...products];
 
   return (
-    <div className="overflow-hidden border-b border-gray-800 bg-gray-950 text-white">
+    <div className="overflow-hidden border-b border-gray-200 bg-white text-black">
       <div className="price-ticker-track flex w-max">
         {tickerProducts.map((product, index) => {
           const isUp = product.change.dir === "up";
@@ -51,21 +51,21 @@ export default function PriceTicker() {
             >
               <span>{product.image}</span>
 
-              <span className="font-medium">
+              <span className="font-medium text-black">
                 {product.nameBn}
               </span>
 
-              <span className="text-gray-300">
+              <span className="text-gray-700">
                 ৳{toBengaliNumber(product.today)}/{product.unit}
               </span>
 
               <span
                 className={
                   isUp
-                    ? "font-semibold text-green-400"
+                    ? "font-semibold text-green-700"
                     : isDown
-                      ? "font-semibold text-red-400"
-                      : "text-gray-400"
+                      ? "font-semibold text-red-600"
+                      : "text-gray-600"
                 }
               >
                 {isUp ? "▲" : isDown ? "▼" : "—"}
@@ -80,3 +80,4 @@ export default function PriceTicker() {
     </div>
   );
 }
+

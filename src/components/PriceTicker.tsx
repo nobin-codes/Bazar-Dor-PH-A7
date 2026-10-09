@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Product } from "@/types/product";
 
-const BASE_URL =
-  "https://api.abcz.workers.dev/api/bazardor";
+const BASE_URL = "https://api.abcz.workers.dev/api/bazardor";
 
 function toBengaliNumber(value: number): string {
   return value.toLocaleString("bn-BD");
@@ -23,7 +22,6 @@ export default function PriceTicker() {
         }
 
         const data: Product[] = await response.json();
-
         setProducts(data);
       } catch {
         setProducts([]);
@@ -37,40 +35,43 @@ export default function PriceTicker() {
     return null;
   }
 
+  const tickerProducts = [...products, ...products];
+
   return (
-    <div className="overflow-hidden border-b bg-black text-white">
-      <div className="flex w-max animate-[ticker_35s_linear_infinite]">
-        {[...products, ...products].map((product, index) => {
+    <div className="overflow-hidden border-b border-gray-800 bg-gray-950 text-white">
+      <div className="price-ticker-track flex w-max">
+        {tickerProducts.map((product, index) => {
           const isUp = product.change.dir === "up";
           const isDown = product.change.dir === "down";
 
           return (
             <div
               key={`${product.id}-${index}`}
-              className="flex items-center gap-2 px-6 py-3 text-sm whitespace-nowrap"
+              className="flex shrink-0 items-center gap-2 px-5 py-3 text-sm"
             >
               <span>{product.image}</span>
 
-              <span>{product.nameBn}</span>
+              <span className="font-medium">
+                {product.nameBn}
+              </span>
 
-              <span>
+              <span className="text-gray-300">
                 ৳{toBengaliNumber(product.today)}/{product.unit}
               </span>
 
               <span
                 className={
                   isUp
-                    ? "text-green-400"
+                    ? "font-semibold text-green-400"
                     : isDown
-                      ? "text-red-400"
-                      : "text-gray-300"
+                      ? "font-semibold text-red-400"
+                      : "text-gray-400"
                 }
               >
-                {isUp ? "▲" : isDown ? "▼" : "—"}{" "}
-                {toBengaliNumber(
-                  Math.abs(product.change.pct)
-                )}
-                %
+                {isUp ? "▲" : isDown ? "▼" : "—"}
+                <span className="ml-1">
+                  {toBengaliNumber(Math.abs(product.change.pct))}%
+                </span>
               </span>
             </div>
           );

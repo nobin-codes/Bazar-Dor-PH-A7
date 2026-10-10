@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import { notFound, redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { getProduct } from "@/lib/api";
 
 interface ProductPageProps {
@@ -51,6 +53,14 @@ function getBengaliUnit(unit: string): string {
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/signin");
+  }
+
   const { slug } = await params;
   const product = await getProduct(slug);
 

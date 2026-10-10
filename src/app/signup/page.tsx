@@ -13,7 +13,6 @@ export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState("");
 
@@ -47,13 +46,14 @@ export default function SignupPage() {
       });
 
       if (result.error) {
-        toast.error(result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি");
+        toast.error(
+          result.error.message || "অ্যাকাউন্ট তৈরি করা যায়নি",
+        );
         return;
       }
 
       toast.success("আপনার অ্যাকাউন্ট তৈরি হয়েছে");
-      router.push("/");
-      router.refresh();
+      router.push("/signin");
     } catch {
       toast.error("অ্যাকাউন্ট তৈরি করা যায়নি। আবার চেষ্টা করুন।");
     } finally {
@@ -67,10 +67,20 @@ export default function SignupPage() {
     setSocialLoading(provider);
 
     try {
-      await signIn.social({
+      const result = await signIn.social({
         provider,
         callbackURL: "/",
       });
+
+      if (result.error) {
+        toast.error(
+          result.error.message ||
+            (provider === "google"
+              ? "Google দিয়ে চালিয়ে যাওয়া যায়নি"
+              : "GitHub দিয়ে চালিয়ে যাওয়া যায়নি"),
+        );
+        setSocialLoading("");
+      }
     } catch {
       toast.error(
         provider === "google"
@@ -84,7 +94,6 @@ export default function SignupPage() {
 
   return (
     <main className="flex min-h-[calc(100vh-100px)] flex-col items-center justify-center bg-[#f7f9f6] px-4 py-8">
-     
       <div className="mb-5 w-full max-w-lg text-center">
         <h1 className="text-2xl font-bold text-black">
           অ্যাকাউন্ট তৈরি করুন
@@ -95,10 +104,8 @@ export default function SignupPage() {
         </p>
       </div>
 
-    
       <div className="w-full max-w-lg rounded-xl border border-[#e2e8df] bg-white p-5 shadow-sm sm:p-6">
         <form onSubmit={handleSubmit} className="space-y-4">
-         
           <div>
             <label
               htmlFor="name"
@@ -122,7 +129,6 @@ export default function SignupPage() {
             />
           </div>
 
-      
           <div>
             <label
               htmlFor="email"
@@ -168,7 +174,6 @@ export default function SignupPage() {
             />
           </div>
 
-        
           <div>
             <label
               htmlFor="confirmPassword"
@@ -201,14 +206,12 @@ export default function SignupPage() {
           </button>
         </form>
 
-  
         <div className="my-4 flex items-center gap-3">
           <div className="h-px flex-1 bg-[#e5eae2]" />
           <span className="text-sm text-[#899389]">অথবা</span>
           <div className="h-px flex-1 bg-[#e5eae2]" />
         </div>
 
-       
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <button
             type="button"
@@ -273,7 +276,6 @@ export default function SignupPage() {
           </button>
         </div>
 
-      
         <div className="mt-5 flex w-full items-center justify-center gap-2 text-center text-sm">
           <span className="text-gray-600">অ্যাকাউন্ট আছে?</span>
 
@@ -287,7 +289,6 @@ export default function SignupPage() {
         </div>
       </div>
 
- 
       <div className="mt-5 text-center">
         <Link
           href="/"
@@ -300,4 +301,3 @@ export default function SignupPage() {
     </main>
   );
 }
-

@@ -1,4 +1,3 @@
-
 import { betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import db, { client } from "./mongodb";
@@ -8,10 +7,13 @@ export const auth = betterAuth({
     client,
   }),
 
-emailAndPassword: {
-  enabled: true,
-  requireEmailVerification: false,
-},
+  secret: process.env.BETTER_AUTH_SECRET,
+  baseURL: process.env.BETTER_AUTH_URL,
+
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
 
   socialProviders: {
     google: {
@@ -25,10 +27,11 @@ emailAndPassword: {
     },
   },
 
-account: {
-  accountLinking: {
-    enabled: true,
-    trustedProviders: ["google"],
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: ["google"],
+    },
   },
-},
 });
+

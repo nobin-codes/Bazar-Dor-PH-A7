@@ -86,8 +86,7 @@ export default async function HomePage() {
           </h1>
 
           <p className="mt-3 max-w-lg text-xs leading-6 text-[#68756b] sm:text-sm sm:leading-7">
-            চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও নিত্যপ্রয়োজনীয় পণ্যের দাম —
-            বাজারের সর্বশেষ তথ্য জানুন, সঠিক সিদ্ধান্ত নিন।
+            চাল, ডাল, তেল, সবজি, মাছ, মাংস, ডিম ও মসলার দাম — বাজারভিত্তিক বিস্তারিত, গড়, সর্বনিম্ন-সর্বাধিক এবং দামের পরিবর্তন এক জায়গায়।
           </p>
 
           <Link href="#সব-পণ্য" className="primary-btn mt-5 inline-flex">

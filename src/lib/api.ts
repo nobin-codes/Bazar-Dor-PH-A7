@@ -1,6 +1,6 @@
 import type { Product } from "@/types/product";
 
-const BASE_URL = "https://api.api-store.workers.dev/api/bazardor";
+const BASE_URL = "https://openapi.programming-hero.com/api/bazardor";
 
 export interface Category {
   slug: string;
@@ -59,4 +59,3 @@ export async function getCategory(
     `${BASE_URL}/categories/${encodeURIComponent(slug)}`,
   );
 }
-

@@ -14,16 +14,20 @@ export default function AuthActivityGuard({
   const router = useRouter();
   const { data: session, isPending } = useSession();
 
-  const authPage = pathname === "/signin" || pathname === "/signup";
+  const isPublicRoute =
+    pathname === "/" ||
+    pathname === "/signin" ||
+    pathname === "/signup" ||
+    pathname.startsWith("/category/");
 
   useEffect(() => {
-    if (isPending || session || authPage || pathname === "/") {
+    if (isPending || session || isPublicRoute) {
       return;
     }
 
     toast.error("এই পেজটি দেখতে আগে সাইন ইন করুন");
     router.replace("/signin");
-  }, [isPending, session, authPage, pathname, router]);
+  }, [isPending, session, isPublicRoute, router]);
 
   return <>{children}</>;
 }

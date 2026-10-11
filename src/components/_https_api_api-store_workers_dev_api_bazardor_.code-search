@@ -1,0 +1,8 @@
+# Query: "https://api.api-store.workers.dev/api/bazardor"
+# ContextLines: 1
+
+1 result - 1 file
+
+src\components\PriceTicker.tsx:
+  5  
+  6: const BASE_URL = "https://openapi.programming-hero.com/api/bazardor";

@@ -1,23 +1,14 @@
 "use client";
 
-import { useSession } from "@/lib/auth-client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
-  const { data: session, isPending } = useSession();
+  const router = useRouter();
 
-  if (isPending) {
-    return <p>Loading...</p>;
-  }
+  useEffect(() => {
+    router.replace("/");
+  }, [router]);
 
-  if (!session) {
-    return <p>You are not logged in.</p>;
-  }
-
-  return (
-    <main>
-      <h1>Dashboard</h1>
-      <p>Welcome, {session.user.name}</p>
-      <p>{session.user.email}</p>
-    </main>
-  );
+  return null;
 }

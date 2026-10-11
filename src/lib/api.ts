@@ -38,18 +38,14 @@ export async function getProductsByCategory(
 
 export async function getProduct(
   slug: string,
-): Promise<Product> {
+): Promise<Product | null> {
   const products = await getProducts();
 
   const product = products.find(
     (item) => item.slug === slug,
   );
 
-  if (!product) {
-    throw new Error("পণ্য পাওয়া যায়নি");
-  }
-
-  return product;
+  return product ?? null;
 }
 
 export async function getCategory(
